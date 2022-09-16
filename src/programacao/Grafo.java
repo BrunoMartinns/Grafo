@@ -37,7 +37,7 @@ public class Grafo {
 		System.out.println("Ordem: " + ordemGrafo);
 		System.out.println("Grafo: " + tamanhoGrafo);
 		int [] grauEntrada = grausDeEntradaDeCadaVertice(matrixAdjacente, tamanhoGrafo);
-        int [] grauSaida = grausDeSaidaDeCadaVertice(matrixAdjacente, tamanhoGrafo );
+		int [] grauSaida = grausDeSaidaDeCadaVertice(matrixAdjacente, tamanhoGrafo );
         
         analisarVeticeIsolado(grauEntrada, grauSaida);
 
@@ -69,7 +69,7 @@ public class Grafo {
 			System.out.print(verticeFonte + " -> ");	
 		} else {
 			if(ante[v] == null){
-				System.out.print("Não há caminho");
+				System.out.print("NÃ£o ha caminho");
 			} else {
 				imprimir(ante[v], verticeFonte, ante);
 				System.out.print(v + "  ");
@@ -232,7 +232,7 @@ public class Grafo {
             }
         } else {
             System.out.println();
-            System.out.print("            Não existe vertice isolados");
+            System.out.print("            NÃ£o existe vertice isolados");
         }
  
     }
