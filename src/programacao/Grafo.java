@@ -6,15 +6,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Grafo {
 	
 	public static void main(String args[]) throws IOException, ParseException, InterruptedException {
 		
-		String path = "C:\\Users\\bruno\\Downloads\\pequenoG.txt";
+		String path = "src\\arquivoTxt\\pequenoG.txt";
 		String buffRead = " ";
 		buffRead = new String(Files.readAllBytes(Paths.get(path)));
-		String buff = buffRead.replace("\n", "\s");        //String buff = buffRead.replaceAll("\\r\\n|\\n", "");
+		String buff = buffRead.replace("\n", "\s");      
 		String[] arrayNovidade = buff.split(" ");
 		int[] arrayNovidadeInt;
 			
@@ -39,7 +41,75 @@ public class Grafo {
         
         analisarVeticeIsolado(grauEntrada, grauSaida);
 
+
+        
+        
+		// distancia de cada vertices - > atividade 2:
+		Scanner leitor = new Scanner(System.in);
+		System.out.println();
+		System.out.println("Informe o vertice fonte:");
+		int vFonte = leitor.nextInt();
+		System.out.println("Informe o vertice final:");
+		int vFinal = leitor.nextInt();
+
+		analisarDistancia(matrixAdjacente, vFonte, vFinal);
+
+
+
+
+
+
 		
+	}
+
+
+	private static void imprimir(Integer v, int verticeFonte, Integer []ante){
+		
+		if(v == verticeFonte){
+			System.out.print(verticeFonte + " -> ");	
+		} else {
+			if(ante[v] == null){
+				System.out.print("Não há caminho");
+			} else {
+				imprimir(ante[v], verticeFonte, ante);
+				System.out.print(v + "  ");
+			}
+		}
+	}
+
+	private static void analisarDistancia(int[][] matrixAdjacente, int verticeFonte, int v){
+		EnumCor []cor = new EnumCor[matrixAdjacente.length];
+		Integer []ante = new Integer[matrixAdjacente.length];
+		long []distancia = new long[matrixAdjacente[0].length];
+		LinkedList<Integer> linkedList = new LinkedList<Integer>();
+		
+		for (int i = 0; i < distancia.length; i++) {
+			cor[i] = EnumCor.BRANCO;
+			distancia[i] = 9999999999999L;
+			ante[i] = null; 
+		}
+
+		cor[verticeFonte] = EnumCor.CINZA;
+		distancia[verticeFonte] = 0;
+
+		linkedList.add(verticeFonte);
+
+		while(!linkedList.isEmpty()){
+			Integer u = linkedList.pop();
+
+			for (int i = 0; i < matrixAdjacente.length; i++) {
+				if(matrixAdjacente[i][u] == 1 || matrixAdjacente[u][i] == 1){
+					if(cor[i]== EnumCor.BRANCO){
+						cor[i] = EnumCor.CINZA;
+						distancia[i] = distancia[u] + 1;
+						ante[i] = u;
+						linkedList.add(i);
+					}
+				}
+			}
+			cor[u]= EnumCor.PRETO;
+		}
+		imprimir(v, verticeFonte, ante);
 	}
 	
 	private static int[] grausDeEntradaDeCadaVertice(int[][] matrixAdjacente, int tamanhoGrafo) {
