@@ -34,14 +34,15 @@ public class Grafo {
 		System.out.println();
 		System.out.println("Ordem: " + ordemGrafo);
 		System.out.println("Grafo: " + tamanhoGrafo);
-		grausDeEntradaDeCadaVertice(matrixAdjacente, tamanhoGrafo);
-		grausDeSaidaDeCadaVertice(matrixAdjacente, tamanhoGrafo );
+		int [] grauEntrada = grausDeEntradaDeCadaVertice(matrixAdjacente, tamanhoGrafo);
+        int [] grauSaida = grausDeSaidaDeCadaVertice(matrixAdjacente, tamanhoGrafo );
+        
+        analisarVeticeIsolado(grauEntrada, grauSaida);
+
 		
 	}
 	
-	
-	
-	private static void grausDeSaidaDeCadaVertice(int[][] matrixAdjacente, int tamanhoGrafo) {
+	private static int[] grausDeEntradaDeCadaVertice(int[][] matrixAdjacente, int tamanhoGrafo) {
 		int[] grauEntrada = new int [tamanhoGrafo];
 		int grau = 0;
 		
@@ -58,7 +59,7 @@ public class Grafo {
 		}
 		System.out.println();
 		System.out.println();
-		System.out.print("Grau de saida:  ");
+		System.out.print("Grau de entrada:  ");
 		for(int cont=0; cont<tamanhoGrafo; cont++) {
 			if(cont<tamanhoGrafo) {
 			System.out.print(cont + ":" + grauEntrada[cont] + " ");
@@ -67,11 +68,13 @@ public class Grafo {
 			}
 		}
 		
+		return grauEntrada;
+		
 	}
 
 
 
-	private static void grausDeEntradaDeCadaVertice(int[][] matrixAdjacente, int tamanhoGrafo) {
+	private static int[] grausDeSaidaDeCadaVertice(int[][] matrixAdjacente, int tamanhoGrafo) {
 		int[] grauEntrada = new int [tamanhoGrafo];
 		int grau = 0;
 		
@@ -87,7 +90,7 @@ public class Grafo {
 			
 		}
 		System.out.println();
-		System.out.print("Grau de entrada:  ");
+		System.out.print("Grau de saida:  ");
 		for(int cont=0; cont<tamanhoGrafo; cont++) {
 			if(cont<tamanhoGrafo) {
 			System.out.print(cont + ":" + grauEntrada[cont] + " ");
@@ -95,6 +98,8 @@ public class Grafo {
 				break;
 			}
 		}
+		
+		return grauEntrada;
 		
 	}
 
@@ -141,14 +146,25 @@ public class Grafo {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	private static void analisarVeticeIsolado(int[] grauEntrada, int[] grauSaida) {
+        int contVertice=0;
+        int []vertice = new int [grauEntrada.length];
+        for(int cont=0; cont<grauEntrada.length; cont++){
+            if(grauEntrada[cont]==0 && grauSaida[cont]==0){
+                vertice[contVertice] =  cont;
+                contVertice++;
+            }
+        }
+        if(contVertice!=0){
+            System.out.print("Vertices isolados: ");
+            for(int cont=0; cont<vertice.length; cont++){
+                System.out.print(vertice[cont] + " ");
+            }
+        } else {
+            System.out.println();
+            System.out.print("            Não existe vertice isolados");
+        }
+ 
+    }
 
 }
