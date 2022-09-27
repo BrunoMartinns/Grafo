@@ -13,7 +13,7 @@ public class Grafo {
 	
 	public static void main(String args[]) throws IOException, ParseException, InterruptedException {
 		
-		String path = "src\\arquivoTxt\\pequenoG.txt";
+		String path = "src\\\\arquivoTxt\\\\pequenoG.txt";
 		String buffRead = " ";
 		buffRead = new String(Files.readAllBytes(Paths.get(path)));
 		String buff = buffRead.replace("\n", "\s");      
@@ -47,20 +47,72 @@ public class Grafo {
 		// distancia de cada vertices - > atividade 2:
 		Scanner leitor = new Scanner(System.in);
 		System.out.println();
+		System.out.println();
 		System.out.println("Informe o vertice fonte:");
 		int vFonte = leitor.nextInt();
 		System.out.println("Informe o vertice final:");
 		int vFinal = leitor.nextInt();
 
 		analisarDistancia(matrixAdjacente, vFonte, vFinal);
-
-
-
-
-
-
+		
+		// profundidade -> atividade 3:
+		
+		System.out.println("#CALCULO DE PROFUNDIDADE:");
+		System.out.println();
+		System.out.println();
+		System.out.println("Informe o vertice:");
+		int vProfund = leitor.nextInt();
+		
+		analisarProfundidade(matrixAdjacente, vProfund);
 		
 	}
+	
+
+
+	private static void analisarProfundidade(int[][] matrixAdjacente, int vProfund) {
+		int tempo;
+		EnumCor []cor = new EnumCor[matrixAdjacente.length];
+		Integer []ante = new Integer[matrixAdjacente.length];
+		long []distancia = new long[matrixAdjacente[0].length];
+		LinkedList<Integer> linkedList = new LinkedList<Integer>();
+		
+		for(int i = 0; i < distancia.length; i++) {
+			cor[i] = EnumCor.BRANCO;
+			ante[i] = -1; 
+		}
+		
+		tempo=1;
+		
+		int []tempoInicial = new int[13];
+		int []tempoFinal = new int[13];
+		
+			analisarVisitante(matrixAdjacente, vProfund, tempo, cor, linkedList, tempoInicial, tempoFinal, distancia, ante);
+		
+		
+		}
+	
+	
+	private static void analisarVisitante(int[][] matrixAdjacente, int vProfund, int tempo, EnumCor[] cor, LinkedList<Integer> linkedList, int[] tempoInicial, int[] tempoFinal, long[] distancia, Integer[] ante) {
+	
+		cor[vProfund] = EnumCor.CINZA;
+		tempoInicial[vProfund] = tempo++;
+		System.out.println(" "  + vProfund );
+		
+		for (int i = 0; i < matrixAdjacente.length; i++) {
+			if(matrixAdjacente[i][vProfund] == 1 || matrixAdjacente[vProfund][i] == 1){
+				if(cor[i]== EnumCor.BRANCO){
+					cor[i] = EnumCor.CINZA;
+					ante[i] = vProfund;
+					analisarVisitante(matrixAdjacente, i, tempo, cor, linkedList, tempoInicial, tempoFinal, distancia, ante);
+				}
+			}
+		}
+		
+		cor[vProfund]= EnumCor.PRETO;
+		tempoFinal[vProfund]= tempo++;	
+		
+	}
+
 
 
 	private static void imprimir(Integer v, int verticeFonte, Integer []ante){
